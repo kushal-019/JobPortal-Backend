@@ -1,11 +1,21 @@
 
-const errorMiddleWare=(er, req,res ,next)=>{
+const errorMiddleWare=(err, req,res ,next)=>{
     console.log(err);
-    res.status(500).send({
+    const defaultError  = {
         success : false,
-        message : "Something went wrong" ,
-        err,
-    });
+        message : err ,
+        statusCode : 500,
+    };
+    if(err.name === 'ValidationError'  ){
+        defaultError.statusCode = 400,
+        defaultError.message = Object.values(err.errors).map((item)=> item.message).join(",");
+    }
+    if(err && err.code === 11000 ){
+        defaultError.statusCode = 400,
+        defaultError.message = `${Object.keys(err.keyValue)} field has to be unique`;
+    }
+
+    res.status(defaultError.statusCode).send(defaultError.message);
 };
 
 export default errorMiddleWare;
