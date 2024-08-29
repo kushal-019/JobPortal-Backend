@@ -34,7 +34,12 @@ userSchema.pre("save" , async function(){
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password , salt);
 });
-userSchema.methods.createJWT = function(){
+userSchema.methods.comparePassword = async function(userPassword){
+    const matched = await bcrypt.compare(userPassword , this.password );
+
+    return matched;
+}
+userSchema.methods.createJWT = function (){
     return JWT.sign({userId : this._id } , process.env.JWTTOKEN , {expiresIn : '1d'});
 }
 export default mongoose.model("User" , userSchema);
