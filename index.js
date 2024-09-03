@@ -11,6 +11,7 @@ import Authrouter from './routes/authRoute.js';
 import userRouter from './routes/userRoute.js';
 
 import errorMiddleWare from './middleware/errorMiddleWare.js';
+import JobRouter from './routes/jobRoute.js';
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(errorMiddleWare);
 app.use("/api/v1/test" , Testrouter);
 app.use("/api/v1/auth" , Authrouter);
 app.use("/api/v1/user" , userRouter);
+app.use("/api/v1/job" , JobRouter);
 connectDB();
 
 const PORT = process.env.PORT || 8080;
