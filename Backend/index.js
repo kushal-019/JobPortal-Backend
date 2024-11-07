@@ -6,6 +6,13 @@ import 'express-async-errors';
 import cors from "cors"
 import morgan from 'morgan';
 
+// Security packages
+import helmet from "helmet";
+import xss from "xss-clean";
+import mongoSanitize from "express-mongo-sanitize";
+
+
+
 import Testrouter from './routes/testRoute.js';
 import Authrouter from './routes/authRoute.js';
 import userRouter from './routes/userRoute.js';
@@ -13,7 +20,13 @@ import userRouter from './routes/userRoute.js';
 import errorMiddleWare from './middleware/errorMiddleWare.js';
 import JobRouter from './routes/jobRoute.js';
 
+
 const app = express();
+
+app.use(helmet());
+app.use(xss());
+app.use(mongoSanitize());
+
 
 app.use(express.json());
 app.use(cors()) 
